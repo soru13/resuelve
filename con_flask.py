@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 #-*-coding:utf-8-*-
+from flask import Flask,url_for,request
+from flask import render_template #para renderizar templates
 import datetime #para el manejo de fechas
 from datetime import datetime,timedelta,date
 import calendar
@@ -162,35 +164,55 @@ def validateDateEs(date):
    		pass
     return True
 
-while True:
-	user = raw_input("¿Que id tienes?: ")
-	start = raw_input("¿Fecha inicio formato(yyyy-mm-dd)?: ")
-	finish = raw_input("¿Fecha final formato(yyyy-mm-dd)?: ")
-	
-	if validateDateEs(start):
-		print ("fecha incorrecta, No hagas trampa :)")
-		continue
-	if validateDateEs(finish):
-		print ("fecha incorrecta, No hagas trampa :)")
-		continue
-	if str(finish) < str(start):
-	    print "Fecha Final no puede ser menor a la fecha de Inicio"
-	    continue
-	fecha_inicial = datetime.strptime(str(start), "%Y-%m-%d")
-	fecha_final = datetime.strptime(str(finish), "%Y-%m-%d")
-	diferencia = fecha_final -fecha_inicial
-	resultado=iterar_recursivo(user,fecha_inicial,fecha_final,diferencia.days+1)
-	if resultado:
-		print 'numero de facturas %i' % resultado
+# cuando el usuario entre a la ruta normal el /
+#Ha esto se le conoce como decorador
+@app.route("/")
+@app.route("/numero_facturas/",methods=['GET','POST'])
+def id_cliente():
+	if request.method == 'POST':
+		print '-------------------------------------------'
+		print request.form['inicio']
+		print request.form['fin']
+		print '-------------------------------------------'
+		# Guardamos las fechas y el id
+		user_id = request.form['id_cliente'] #id del cliente a sacar facturas
+		start = request.form['inicio'] #fecha inicio
+		finish =request.form['fin']	#fecha fin
+		if start!= None and finish != None and user_id != None :
+
+			# Validamos las fechas que tengan el formato correcto
+			if validateDateEs(start) or validateDateEs(finish):
+				if validateDateEs(start):
+					return render_template("hello.html",error="Formato de fecha INICIO invalido")
+				if validateDateEs(finish):
+					return render_template("hello.html",error="Formato de fecha FIN invalido")
+				if str(finish) < str(start):
+					return render_template("hello.html",error="Fecha Final no puede ser menor a la fecha de Inicio")
+			else:
+				# Si las fechas estan bíen procedemos hacer la consulta a la url proporcionada
+				fecha_inicial = datetime.strptime(str(start), "%Y-%m-%d")
+				fecha_final = datetime.strptime(str(finish), "%Y-%m-%d")
+
+				#pues de igual manera nunca se sabe que tanta actividad tenga el cliente y necesitamos siempre
+				# hacer una llamada para ver  si tiene mas de 100
+				#sacamos la diferencia en dias
+				diferencia = fecha_final -fecha_inicial
+				#si el rango de fechas solo es un mes es posible que tenga menos de 100 facturas
+				resultado=iterar_recursivo(user_id,fecha_inicial,fecha_final,diferencia.days+1)
+				if resultado:
+					return render_template("hello.html",id_cliente = user_id,fecha_inicio=start,fecha_fin=finish,numero_facturas=resultado)
+				else:
+					return render_template("hello.html",error="Hubo algun error inesperado. :(")
+
+
+
+		else:
+			return render_template("hello.html")
 	else:
-		print 'Hubo algun error inesperado. :(' % resultado
-	
-
-
-# id ='9a936864-3c10-49a9-b8bd-94bfe26b2163'
-# start ='2017-01-01'
-# finish ='2017-01-11'
-# print r.status_code
-# print r.headers
-# print r.content
- 
+		# return "Bienvenido Resuelve"
+		# return "ID Cliente! %s" % post_id
+		return render_template("hello.html")
+# esto de aqui es lo primero que se ejecuta y validar que esta corriendo por primera vez
+if __name__== "__main__":
+	app.debug = True #detecta el cambio y los errores, tambien tira las pantallas de debugin y te dice el error
+	app.run()

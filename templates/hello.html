@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Hello from Resuelve</title>
+	
+	<!-- Cargamos el css para dar una bonita fecha -->
+	<link rel="stylesheet" href="{{ url_for('static', filename = 'jquery-ui.min.css') }}">	
+	
+</head>
+<body>
+	
+	{% if id_cliente and fecha_inicio  and fecha_fin and numero_facturas %}
+		<h1>Hello id {{id_cliente}}</h1> 
+		<h5>{{fecha_inicio}} | {{fecha_fin}}</h5>
+		<p>numero de facturas: {{numero_facturas}} </p>
+
+		<a href="/">Volver</a>
+	{% else %}
+		<h1>Hello Resuelve!</h1>
+		{{error}}
+		<form action="/numero_facturas/" method="POST">
+			<span>Id Cliente</span>
+			<input type="text" name="id_cliente" required><br>
+			<span>Fecha Inicio</span>
+			<input type="text" id="from" name="inicio" required><br>
+			<span>Fecha Final</span>
+			<input type="text" id="to" name="fin" required><br>
+			<input type="submit">
+		</form>
+	{% endif %}
+
+	 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>  -->
+        <script type = "text/javascript" src = "{{ url_for('static', filename = 'jquery-3.2.1.min.js') }}" ></script>
+        <script type = "text/javascript" src = "{{ url_for('static', filename = 'jquery-ui.min.js') }}" ></script>
+<script>
+        	$( function() {
+
+		    var dateFormat = "yyyy-mm-dd",
+		      from = $( "#from" )
+		        .datepicker({
+		          defaultDate: "+1w",
+		          changeMonth: true,
+		          numberOfMonths: 3,
+		          dateFormat: "yy-mm-dd"
+		        })
+		        .on( "change", function() {
+		          to.datepicker( "option", "minDate", getDate( this ) );
+		        }),
+		      to = $( "#to" ).datepicker({
+		        defaultDate: "+1w",
+		        changeMonth: true,
+		        numberOfMonths: 3,
+		        dateFormat: "yy-mm-dd"
+		      })
+		      .on( "change", function() {
+		        from.datepicker( "option", "maxDate", getDate( this ) );
+		      });
+		 
+		    function getDate( element ) {
+		      var date;
+		      try {
+		        date = $.datepicker.parseDate( dateFormat, element.value );
+		      } catch( error ) {
+		        date = null;
+		      }
+		 
+		      return date;
+		    }
+		  } );
+
+        
+  </script>
+</body>
+</html>
+
+
