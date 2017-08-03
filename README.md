@@ -4,7 +4,7 @@ Resuelve.mx
 Numero de facturas por cliente dado un id
 
 
-Opción 1 (a través de un pequeño servidor web levantado localmente)
+##Opción 1 (a través de un pequeño servidor web levantado localmente)
 
 	Dependencias:
 		-paso 1 instalar PIP <- pip es un gestor de repositorios para python
@@ -30,7 +30,7 @@ Opción 1 (a través de un pequeño servidor web levantado localmente)
 		//para salir
 		ctrl + C
 
-Opción 2 (En consola, con un poquito menos de código)
+##Opción 2 (En consola, con un poquito menos de código)
 
 	//solo corre esto:
 	python numero_faturas.py
@@ -38,7 +38,8 @@ Opción 2 (En consola, con un poquito menos de código)
 	//para salir
 	ctrl + C
 
-Análisis o lógica
+##Análisis o lógica
+
 	```
 	1 por meses:
 		tratara de buscar por meses ejemplo: enero(31) 2017-01-01  | 2017-01-31 , febrero(28) 2017-02-01  | 2017-02-28, etc.
@@ -47,7 +48,8 @@ Análisis o lógica
 		Tratara de resolverlo por semanas. Sino por dias.
 	3 Días:
 		Lo resolvera por dias cuando detecta que no hes ni la semana el rango de fechas a buscar.```
-Postdata
+##Postdata
+
 	```
 	AL analisar el código se darann cuenta que interactuo con las fechas y por falta de tiempo no pude optimizarlo más, el código es capas 
 	de resolverlo por meses, semanas y días. Pero como es un repositorio publico otra persona lo puede usar y continuar optimizandolo como 
