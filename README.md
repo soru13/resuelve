@@ -39,13 +39,13 @@ Opción 2 (En consola, con un poquito menos de código)
 	ctrl + C
 
 Análisis o lógica
-	1 por meses:
+	"""1 por meses:
 		tratara de buscar por meses ejemplo: enero(31) 2017-01-01  | 2017-01-31 , febrero(28) 2017-02-01  | 2017-02-28, etc.
 		Si un mes exede los 100 resultados el código tratara de hacerlo por semanas
 	2 por semanas:
 		Tratara de resolverlo por semanas. Sino por dias.
 	3 Días:
-		Lo resolvera por dias cuando detecta que no hes ni la semana el rango de fechas a buscar.
+		Lo resolvera por dias cuando detecta que no hes ni la semana el rango de fechas a buscar."""
 Postdata
 	AL analisar el código se darann cuenta que interactuo con las fechas y por falta de tiempo no pude optimizarlo más, el código es capas de resolverlo por meses, semanas y días. Pero como es un repositorio publico otra persona lo puede usar y continuar optimizandolo como ejemplo:
 	Si hay 6 meses a buscar y 2 de ellos exede las 100 facturas, entonces 4 de ellos se buscara por rango e fechas por mes y los otros dos continuaran sumando facturas pero por semanas.
